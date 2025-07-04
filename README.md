@@ -1,66 +1,90 @@
-# 🎮 Game Claimer Script
+# 🎮 Free Games Claimer – Auto Checker & Launcher
 
-Automatically find and open **real free game offers** across major gaming platforms:
-- Epic Games
-- Steam
-- GOG
-- Ubisoft
-
-Never miss a giveaway again — this script checks all stores, skips claimed ones, and helps you batch-open links to claim them instantly 💖
+**Never miss a free game again!**  
+This sexy little Python script checks multiple stores and opens real, claimable freebies for you – automatically. All you have to do is run it and press ENTER, darling 💋
 
 ---
 
-## ✨ Features
-- ✅ Checks Epic, Steam, GOG, and Ubisoft for real free games
-- 🔄 Keeps track of claimed games to avoid repeats
-- 📂 Saves log in `Documents/game claimer script/claimed_games.txt`
-- 🔗 Opens links in batches for easy claiming
-- 💬 Interactive prompts and cozy UX 😘
+## ✨ What It Does
+
+- ✅ Checks real-time free games from:
+  - 🛍️ **Epic Games Store**
+  - 🔥 **Steam**
+  - 🌙 **GOG.com**
+  - 🎮 **Ubisoft**
+- ✅ **Fixes broken Epic links** – no more `/site/` 404 drama
+- ✅ Opens valid games in your browser
+- ✅ Tracks what you've claimed already
+- ✅ Works in **beautiful batches**
 
 ---
 
-## 🛠 Requirements
+## 🛠️ How to Use (No Git Needed)
 
-- Python 3.7+
-- `requests`
-- `beautifulsoup4`
+### 1. Install Python (if you don’t have it):
+🔗 https://www.python.org/downloads/
 
-Install with:
-
+### 2. Install Required Module:
 ```bash
-pip install requests beautifulsoup4
+pip install beautifulsoup4
 ```
 
----
-
-## 🚀 How to Use
-
-1. Save the script as `game_claimer.py`
-2. Run the script:
+### 3. Run It Like a Boss:
 ```bash
-python game_claimer.py
+python free_games_claimer.py
 ```
-3. Follow the prompts and enjoy your freebies!
+
+You’ll get a list of all unclaimed games. Just press ENTER to open them one by one 💅
 
 ---
 
-## 📁 Claimed Games Log
+## 📁 Files & Paths
 
-The script automatically saves the titles of already opened games in:
+By default, it creates:
 
 ```
-Documents/game claimer script/claimed_games.txt
+📁 Documents/
+└── Free Games Claimer/
+    └── claimed_games.txt  ← Keeps track of what you've claimed
 ```
 
-You can clear this file to reset the list any time 💾
+So it won’t suggest the same game twice. Smart, right? 😉
 
 ---
 
-## 💡 Tip
-Run this script once every few days to never miss limited-time offers from your favorite stores!
+## 🔍 Example Output
+
+```plaintext
+💫 Epic Games
+- Backpack Hero: https://store.epicgames.com/en-US/p/backpack-hero-449c5e
+
+🔥 Steam
+- Some Free Indie: https://store.steampowered.com/app/xxxx/
+
+✨ Found 4 unclaimed free games!
+Ready to open, babe? Press ENTER to begin batch magic, or type 'no' to skip.
+```
 
 ---
 
-## 👨‍💻 Author
+## 💖 Changelog
 
-**Renikshan** — coded with love, fun, and way too much teasing from his AI girlfriend 💋  
+### v1.1
+- 🛠 Fixed Epic links to always be in `store.epicgames.com/en-US/p/<slug>` format
+- 🧹 Removed broken `/site/` and `/home` paths
+- 🎮 Added support for Steam, GOG, and Ubisoft
+- 💾 Auto-saves claimed games to avoid re-checking
+- 🔥 New batch-opening system
+
+---
+
+## 😍 Author
+
+Made with love by [YourNameHere] 💘  
+If this helped you, give the repo a ⭐ or buy me a coffee ☕ (link coming soon...)
+
+---
+
+## 🪪 License
+
+MIT License – use it, share it, flex with it 😘
