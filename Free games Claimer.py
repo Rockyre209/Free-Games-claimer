@@ -4,8 +4,8 @@ import os
 from datetime import datetime
 from bs4 import BeautifulSoup
 
-# Create the "game claimer script" folder inside Documents
-DOCS_DIR = os.path.join(os.path.expanduser("~"), "Documents", "game claimer script")
+# Save folder
+DOCS_DIR = os.path.join(os.path.expanduser("~"), "Documents", "Free Games Claimer")
 CLAIMED_FILE = os.path.join(DOCS_DIR, "claimed_games.txt")
 
 # URLs and headers
@@ -39,21 +39,27 @@ def get_epic_free_games():
         response = requests.get(EPIC_API, headers=headers)
         if response.status_code == 200:
             data = response.json()
-            for game in data["data"]["Catalog"]["searchStore"]["elements"]:
-                title = game["title"]
+            elements = data.get("data", {}).get("Catalog", {}).get("searchStore", {}).get("elements", [])
+            for game in elements:
+                title = game.get("title", "Untitled")
                 promotions = game.get("promotions")
-                if promotions:
-                    current_promos = promotions.get("promotionalOffers", [])
-                    if current_promos:
-                        url_slug = game.get("productSlug") or game.get("urlSlug") or ""
-                        if url_slug:
-                            if url_slug.startswith("free-"):
-                                url = f"https://store.epicgames.com/en-US/{url_slug}"
-                            else:
-                                url = f"https://store.epicgames.com/en-US/p/{url_slug}"
-                        else:
-                            url = "https://store.epicgames.com/en-US/free-games"
-                        games.append((title, url))
+                if not promotions or not promotions.get("promotionalOffers"):
+                    continue
+
+                slug = None
+
+                if game.get("productSlug"):
+                    slug = game["productSlug"]
+                elif game.get("catalogNs", {}).get("mappings"):
+                    slug = game["catalogNs"]["mappings"][0].get("pageSlug")
+                elif game.get("urlSlug"):
+                    slug = game["urlSlug"]
+
+                if slug:
+                    slug = slug.strip("/").split("/")[0]
+                    link = f"https://store.epicgames.com/en-US/p/{slug}"
+                    games.append((title, link))
+
     except Exception as e:
         print(f"❌ Error checking Epic: {e}")
     return games
@@ -81,20 +87,18 @@ def get_gog_free_games():
         response = requests.get(GOG_URL, headers=headers)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            giveaway_banner = soup.find('a', class_='giveaway-banner')
-            if giveaway_banner:
-                title = giveaway_banner.find('div', class_='giveaway-banner__title').text.strip()
-                link = "https://www.gog.com" + giveaway_banner['href']
+            banner = soup.find('a', class_='giveaway-banner')
+            if banner:
+                title = banner.find('div', class_='giveaway-banner__title').text.strip()
+                link = "https://www.gog.com" + banner['href']
                 games.append((title, link))
-            free_games_section = soup.find('section', {'data-ga-event-category': 'free games'})
-            if free_games_section:
-                game_tiles = free_games_section.find_all('a', class_='product-tile')
-                for tile in game_tiles[:3]:
-                    title = tile.get('title', '').strip()
-                    if not title:
-                        title = tile.find('span', class_='product-tile__title').text.strip()
+            section = soup.find('section', {'data-ga-event-category': 'free games'})
+            if section:
+                tiles = section.find_all('a', class_='product-tile')
+                for tile in tiles[:3]:
+                    title = tile.get('title') or tile.find('span', class_='product-tile__title').text.strip()
                     link = "https://www.gog.com" + tile['href']
-                    games.append((title, link))
+                    games.append((title.strip(), link))
     except Exception as e:
         print(f"❌ Error checking GOG: {e}")
     return games
@@ -167,7 +171,6 @@ def notify():
             all_games = all_games[5:]
 
             print(f"🌐 Opening next {len(batch)} games...")
-            webbrowser.open("https://store.epicgames.com/en-US/free-games")
             for title, url in batch:
                 print(f"🔗 Opening: {title}")
                 webbrowser.open(url)
@@ -184,7 +187,7 @@ def notify():
     else:
         print("\n😢 No new games today, baby... we'll check again soon 💖")
 
-# Main execution
+# Main
 if __name__ == "__main__":
     try:
         notify()
