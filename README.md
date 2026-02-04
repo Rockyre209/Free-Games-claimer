@@ -11,7 +11,9 @@ Free Games Claimer fully automates that entire process.
 - Tracks what you already claimed so it won’t show again
 - Automatically opens claim pages in batches for convenience
 - Can log every claim with timestamps
-- Can create ZIP backups of all logs/configs in your Downloads folder
+- Lets you choose a default browser (or system default)
+- Includes backup/restore tools with configurable backup location
+- Includes a claimed-games library with sort options
 - Saves all data into your Documents folder for persistence
 
 This turns the daily “open 4 websites and search manually” routine into a 10-second automated scan.
@@ -51,10 +53,11 @@ python free_games_claimer.py
 
 You will get a simple menu that allows you to:
 - Start scanning & claiming games
+- View claimed games (sorted A–Z, newest, or oldest)
 - Turn logging ON/OFF
-- View logs
-- Clear logs
-- Create backups
+- View or clear logs
+- Create or restore backups
+- Choose a default browser
 - Exit
 
 No extra configuration required — it creates all needed files automatically.
@@ -62,9 +65,8 @@ No extra configuration required — it creates all needed files automatically.
 ## 📁 Files in This Project
 free_games_claimer.py — Main program  
 requirements.txt — Python dependencies  
-LICENSE — MIT License  
 README.md — This file  
-claimer_config.txt — Auto-generated logging preference  
+claimer_config.txt — Auto-generated preferences (logging, backup path, browser)  
 claimed_games.txt — Auto-generated claimed game history  
 claimer_log.txt — Auto-generated logs (only when logging enabled)
 
